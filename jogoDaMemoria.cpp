@@ -6,6 +6,7 @@ using namespace std;
 
 int nivel;
 int fimDoJogo;
+string matriz;
 
 int matrizIniciante[4][4] = {
 	{4,6,7,2},
@@ -38,34 +39,30 @@ bool verificaPares(int linha1, int coluna1, int linha2, int coluna2){
 	if (nivel == 1){
 		if (matrizIniciante[linha1][coluna1] == matrizIniciante[linha2][coluna2]){
 			return true;
-	
+
 		}else{
 			return false;
 		}
-	
+
 	}else if(nivel == 2){
 		if (matrizIntermediaria[linha1][coluna1] == matrizIntermediaria[linha2][coluna2]){
 			return true;
-	
+
 		}else{
 			return false;
 		}
-		
+
 	}else if (nivel == 3){
 		if (matrizAvancada[linha1][coluna1] == matrizAvancada[linha2][coluna2]){
 			return true;
-	
+
 		}else{
 			return false;
 		}
-	
+
 	}else{
 		return false;
 	}
-}
-
-
-void modificarMatriz(){
 }
 
 string toString(int i){
@@ -74,25 +71,47 @@ string toString(int i){
     return temp.str();
 }
 
+void modificarMatriz(int linha1, int coluna1, int linha2, int coluna2){
+    if (nivel == 1){
+       //matriz[linha1][coluna1] = toString(matrizIniciante[linha1][coluna1]);
+       // matriz[linha2][coluna2] = toString(matrizIniciante[linha2][coluna2]);
+
+    }else if (nivel == 2){
+        //matriz[linha1][coluna1] = toString(matrizIntermediaria[linha1][coluna1]);
+        //matriz[linha2][coluna2] = toString(matrizIntermediaria[linha2][coluna2]);
+
+    }else{
+        //matriz[linha1][coluna1] = toString(matrizAvancada[linha1][coluna1]);
+        //matriz[linha2][coluna2] = toString(matrizAvancada[linha2][coluna2]);
+    }
+}
+
+
 string geraMatriz(int tamanho){
-    string matriz;
     tamanho += 1;
     matriz += "  ";
+
     for (int i = 1; i < tamanho; i++){
         matriz += toString(i);
         matriz += " ";
     }
+
     matriz += "\n";
+
     for(int i = 1; i < tamanho; i++){
         for (int j = 1; j < tamanho + 2; j++){
+
             if (j == 1){
                 matriz += toString(i);
+
             }else if(j > 1 && j < tamanho + 1){
                 matriz += " *";
             }
         }
+
         matriz += "\n";
     }
+
     return matriz;
 }
 
@@ -120,7 +139,9 @@ string limpaTela(){
     return retorno;
 }
 
-void resetMatriz(){
+void resetMatriz(int linha1, int coluna1, int linha2, int coluna2){
+    modificarMatriz(linha1, coluna1, linha2, coluna2);
+    //falta terminar de implementar
 }
 
 bool fimDeJogo(){
@@ -130,54 +151,61 @@ bool fimDeJogo(){
 		}else{
 			return false;
 		}
-		
+
 	}else if (nivel == 2){
 		if (fimDoJogo == 18){
 			return true;
-		
+
 		}else{
 			return false;
 		}
-	
+
 	}else{
 		if (fimDoJogo == 32){
 			return true;
-		
+
 		}else{
 			return false;
 		}
-	}	
+	}
 }
 
 int main(){
     int linha1, coluna1, linha2, coluna2;
- 
-    cout<< "Escolha um dos niveis:\n" << 
-			"1. Iniciante\n" << 
-			"2. Intermediario\n" << 
+
+    cout<< "Escolha um dos niveis:\n" <<
+			"1. Iniciante\n" <<
+			"2. Intermediario\n" <<
 			"3. Avancado" << endl;
-    
+
     cin>> nivel;
-    
+
     while(nivel <= 0 || nivel > 3){
         cout << "Insira um nivel valido!\n";
         cin >> nivel;
     }
-     
-    
+
+
     cout<< matrizController(nivel);
-    
-    while (! fimDeJogo()){	
+
+    while (! fimDeJogo()){
 		cout<< "Escolha a linha e a coluna, respectivamente, do primeiro elemento:"<< endl;
 		cin>> linha1;
 		cin>> coluna1;
-    
+
 		cout<< "Escolha a linha e a coluna, respectivamente, do segundo elemento:"<<endl;
 		cin>> linha2;
 		cin>> coluna2;
-	
+
 		cout<< linha1 << coluna1 << linha2 << coluna2;
+
+		if (verificaPares(linha1, coluna1, linha2, coluna2)){
+            modificarMatriz(linha1, coluna1, linha2, coluna2);
+
+        }else{
+            resetMatriz(linha1, coluna1, linha2, coluna2);
+        }
 	}
-		  
+
     return 0;
 }
