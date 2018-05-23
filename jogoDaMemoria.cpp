@@ -73,16 +73,16 @@ string toString(int i){
 
 void modificarMatriz(int linha1, int coluna1, int linha2, int coluna2){
     if (nivel == 1){
-//       matriz[linha1][coluna1] = toString(matrizIniciante[linha1][coluna1]);
-       // matriz[linha2][coluna2] = toString(matrizIniciante[linha2][coluna2]);
+        // matrix[linha1][coluna1] = toString(matrizIniciante[linha1][coluna1]);
+       // matrix[linha2][coluna2] = toString(matrizIniciante[linha2][coluna2]);
 
     }else if (nivel == 2){
-        //matriz[linha1][coluna1] = toString(matrizIntermediaria[linha1][coluna1]);
-        //matriz[linha2][coluna2] = toString(matrizIntermediaria[linha2][coluna2]);
+        //matrix[linha1][coluna1] = toString(matrizIntermediaria[linha1][coluna1]);
+        //matrix[linha2][coluna2] = toString(matrizIntermediaria[linha2][coluna2]);
 
     }else{
-        //matriz[linha1][coluna1] = toString(matrizAvancada[linha1][coluna1]);
-        //matriz[linha2][coluna2] = toString(matrizAvancada[linha2][coluna2]);
+        //matrix[linha1][coluna1] = toString(matrizAvancada[linha1][coluna1]);
+        //matrix[linha2][coluna2] = toString(matrizAvancada[linha2][coluna2]);
     }
 }
 
@@ -155,7 +155,8 @@ string limpaTela(){
 
 void resetMatriz(int linha1, int coluna1, int linha2, int coluna2){
     modificarMatriz(linha1, coluna1, linha2, coluna2);
-    //falta terminar de implementar
+    //matrix[linha1][coluna1] = " *";
+    //matrix[linha2][coluna2] = " *";
 }
 
 bool fimDeJogo(){
