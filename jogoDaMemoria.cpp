@@ -73,7 +73,7 @@ string toString(int i){
 
 void modificarMatriz(int linha1, int coluna1, int linha2, int coluna2){
     if (nivel == 1){
-       //matriz[linha1][coluna1] = toString(matrizIniciante[linha1][coluna1]);
+//       matriz[linha1][coluna1] = toString(matrizIniciante[linha1][coluna1]);
        // matriz[linha2][coluna2] = toString(matrizIniciante[linha2][coluna2]);
 
     }else if (nivel == 2){
@@ -87,33 +87,47 @@ void modificarMatriz(int linha1, int coluna1, int linha2, int coluna2){
 }
 
 
-string geraMatriz(int tamanho){
-    tamanho += 1;
-    matriz += "  ";
+string geraMatriz(int tam){
+     string matrix[tam][tam];
 
-    for (int i = 1; i < tamanho; i++){
-        matriz += toString(i);
-        matriz += " ";
-    }
-
-    matriz += "\n";
-
-    for(int i = 1; i < tamanho; i++){
-        for (int j = 1; j < tamanho + 2; j++){
-
-            if (j == 1){
-                matriz += toString(i);
-
-            }else if(j > 1 && j < tamanho + 1){
-                matriz += " *";
+    for(int i = 0; i < tam; i++){
+        for(int j = 0;j < tam; j++){
+            matrix[i][j] = " *";
+            if(i == 0){
+                matrix[i][j] = j;
+            }
+            if(j == 0){
+                matrix[i][j] = i;
             }
         }
-
-        matriz += "\n";
     }
+    string matrixRetorno = "";
+    for(int i = 0; i < tam; i++){
+        for(int j = 0;j < tam; j++){
+            matrixRetorno += matrix[i][j];
 
-    return matriz;
+            }
+            matrixRetorno += "\n";
+
+    }
+    return matrixRetorno;
+
 }
+string getMatrix(int nivel){
+    int tam;
+    if(nivel == 1)
+        tam = 5;
+    else if(nivel == 2)
+        tam = 7;
+    else if(nivel == 3)
+        tam = 9;
+    else
+        cout<<"Nivel invalido";
+
+    return geraMatriz(tam);
+
+}
+
 
 string matrizController(int nivel){
     string matriz;
@@ -186,7 +200,8 @@ int main(){
     }
 
 
-    cout<< matrizController(nivel);
+   // cout<< matrizController(nivel);
+        cout << getMatrix(nivel);
 
     while (! fimDeJogo()){
 		cout<< "Escolha a linha e a coluna, respectivamente, do primeiro elemento:"<< endl;
