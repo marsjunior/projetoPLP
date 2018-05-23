@@ -4,9 +4,66 @@
 
 using namespace std;
 
+int nivel;
+int fimDoJogo;
 
-bool verificaPares(int vetor1, int vetor2){
+int matrizIniciante[4][4] = {
+	{4,6,7,2},
+	{1,3,5,2},
+	{4,5,6,3},
+	{1,8,8,7}
+};
+
+int matrizIntermediaria[6][6] = {
+	{18,5,8,2,4,9},
+	{5,16,12,7,3,10},
+	{1,17,8,6,11,18},
+	{10,3,17,14,4,13},
+	{7,15,2,11,16,6},
+	{12,14,9,1,15,13}
+};
+
+int matrizAvancada[8][8] = {
+	{10,4,9,2,14,14,21,26},
+	{23,17,29,11,20,1,30,30},
+	{4,27,17,5,24,29,6,6},
+	{26,28,11,8,13,16,12,31},
+	{21,22,2,19,19,1,25,25},
+	{3,27,10,32,24,15,7,12},
+	{23,18,28,5,16,15,31,13},
+	{9,22,3,18,20,32,7,8}
+};
+
+bool verificaPares(int linha1, int coluna1, int linha2, int coluna2){
+	if (nivel == 1){
+		if (matrizIniciante[linha1][coluna1] == matrizIniciante[linha2][coluna2]){
+			return true;
+	
+		}else{
+			return false;
+		}
+	
+	}else if(nivel == 2){
+		if (matrizIntermediaria[linha1][coluna1] == matrizIntermediaria[linha2][coluna2]){
+			return true;
+	
+		}else{
+			return false;
+		}
+		
+	}else if (nivel == 3){
+		if (matrizAvancada[linha1][coluna1] == matrizAvancada[linha2][coluna2]){
+			return true;
+	
+		}else{
+			return false;
+		}
+	
+	}else{
+		return false;
+	}
 }
+
 
 void modificarMatriz(){
 }
@@ -66,19 +123,61 @@ string limpaTela(){
 void resetMatriz(){
 }
 
-int main(){
-    int entrada1[2], entrada2[2];
-    int nivel;
+bool fimDeJogo(){
+	if (nivel == 1){
+		if (fimDoJogo == 8){
+			return true;
+		}else{
+			return false;
+		}
+		
+	}else if (nivel == 2){
+		if (fimDoJogo == 18){
+			return true;
+		
+		}else{
+			return false;
+		}
+	
+	}else{
+		if (fimDoJogo == 32){
+			return true;
+		
+		}else{
+			return false;
+		}
+	}	
+}
 
-    cout << "Escolha um dos niveis:" << endl << endl << "    1. Iniciante" << endl << "    2. Intermediario" << endl << "    3. Avancado" << endl;
-    cin >> nivel;
+int main(){
+    int linha1, coluna1, linha2, coluna2;
+ 
+    cout<< "Escolha um dos niveis:\n" << 
+			"1. Iniciante\n" << 
+			"2. Intermediario\n" << 
+			"3. Avancado" << endl;
+    
+    cin>> nivel;
+    
     while(nivel <= 0 || nivel > 3){
         cout << "Insira um nivel valido!\n";
         cin >> nivel;
     }
-    cout << matrizController(nivel);
-    cin >> entrada1[0] >> entrada1[1];
-    cin >> entrada2[0] >> entrada2[1];
-    cout << entrada1[0] << entrada1[1] << entrada2[0] << entrada2[1];
+     
+    
+    cout<< matrizController(nivel);
+    
+    while (! fimDeJogo()){	
+		cout<< "Escolha a linha e a coluna, respectivamente, do primeiro elemento:"<< endl;
+		cin>> linha1;
+		cin>> coluna1;
+    
+		cout<< "Escolha a linha e a coluna, respectivamente, do segundo elemento:"<<endl;
+		cin>> linha2;
+		cin>> coluna2;
+	
+		cout<< linha1 << coluna1 << linha2 << coluna2;
+	}
+		  
     return 0;
 }
