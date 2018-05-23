@@ -2,6 +2,7 @@
 #include<string>
 #include<sstream>
 
+
 using namespace std;
 
 int nivel;
@@ -91,13 +92,21 @@ string geraMatriz(int tam){
      string matrix[tam][tam];
 
     for(int i = 0; i < tam; i++){
+    
         for(int j = 0;j < tam; j++){
-            matrix[i][j] = " *";
-            if(i == 0){
-                matrix[i][j] = j;
-            }
+       		if (i==0){
+    			matrix[0][0]="  ";		
+			}
+            
+           if(i == 0 && j!=0){
+			   matrix[0][j] = toString(j) + " ";
+           }
             if(j == 0){
-                matrix[i][j] = i;
+               matrix[i][0] = toString(i);
+           }
+			else if(i>0 && j>0){
+			
+            	matrix[i][j] = " *";
             }
         }
     }
