@@ -7,7 +7,8 @@ using namespace std;
 
 int nivel;
 int fimDoJogo;
-string matriz;
+int tamMatriz;
+string ** matriz;
 
 int matrizIniciante[4][4] = {
 	{4,6,7,2},
@@ -74,46 +75,42 @@ string toString(int i){
 
 void modificarMatriz(int linha1, int coluna1, int linha2, int coluna2){
     if (nivel == 1){
-        // matrix[linha1][coluna1] = toString(matrizIniciante[linha1][coluna1]);
-       // matrix[linha2][coluna2] = toString(matrizIniciante[linha2][coluna2]);
+       matriz[linha1][coluna1] = " " + toString(matrizIniciante[linha1][coluna1]);
+       matriz[linha2][coluna2] = " " + toString(matrizIniciante[linha2][coluna2]);
 
     }else if (nivel == 2){
-        //matrix[linha1][coluna1] = toString(matrizIntermediaria[linha1][coluna1]);
-        //matrix[linha2][coluna2] = toString(matrizIntermediaria[linha2][coluna2]);
+       matriz[linha1][coluna1] = " " + toString(matrizIntermediaria[linha1][coluna1]);
+       matriz[linha2][coluna2] = " " + toString(matrizIntermediaria[linha2][coluna2]);
 
     }else{
-        //matrix[linha1][coluna1] = toString(matrizAvancada[linha1][coluna1]);
-        //matrix[linha2][coluna2] = toString(matrizAvancada[linha2][coluna2]);
+       matriz[linha1][coluna1] = " " + toString(matrizAvancada[linha1][coluna1]);
+       matriz[linha2][coluna2] = " " + toString(matrizAvancada[linha2][coluna2]);
     }
 }
 
-
-string geraMatriz(int tam){
-     string matrix[tam][tam];
-
+string ** matrizDinamica(int tam){
+    string **matriz = (string **) calloc( tam ,sizeof(string *));
     for(int i = 0; i < tam; i++){
-    
-        for(int j = 0;j < tam; j++){
-       		if (i==0){
-    			matrix[0][0]="  ";		
-			}
-            
-           if(i == 0 && j!=0){
-			   matrix[0][j] = toString(j) + " ";
-           }
-            if(j == 0){
-               matrix[i][0] = toString(i);
-           }
-			else if(i>0 && j>0){
-			
-            	matrix[i][j] = " *";
-            }
+        matriz[i] = (string *) calloc(tam, sizeof(string));
+    }
+    return matriz;
+}
+
+void preencheMatriz(){
+    for(int i = 0; i < tamMatriz; i++){
+        for(int j = 0;j < tamMatriz; j++){
+       		matriz[i][j] = " X";
         }
     }
+}
+
+string representaMatriz(){
+    int tam = tamMatriz;
     string matrixRetorno = "";
     for(int i = 0; i < tam; i++){
         for(int j = 0;j < tam; j++){
-            matrixRetorno += matrix[i][j];
+            matrixRetorno += " ";
+            matrixRetorno += matriz[i][j];
 
             }
             matrixRetorno += "\n";
@@ -122,36 +119,18 @@ string geraMatriz(int tam){
     return matrixRetorno;
 
 }
-string getMatrix(int nivel){
-    int tam;
+string geraMatriz(int nivel){
     if(nivel == 1)
-        tam = 5;
+        tamMatriz = 4;
     else if(nivel == 2)
-        tam = 7;
+        tamMatriz = 6;
     else if(nivel == 3)
-        tam = 9;
-    else
-        cout<<"Nivel invalido";
+        tamMatriz = 8;
 
-    return geraMatriz(tam);
+    matriz = matrizDinamica(tamMatriz);
+    preencheMatriz();
+    return representaMatriz();
 
-}
-
-
-string matrizController(int nivel){
-    string matriz;
-    switch (nivel){
-        case 1:
-            matriz = geraMatriz(4);
-            break;
-        case 2:
-            matriz = geraMatriz(6);
-            break;
-        case 3:
-            matriz = geraMatriz(8);
-            break;
-    }
-    return matriz;
 }
 
 string limpaTela(){
@@ -164,8 +143,7 @@ string limpaTela(){
 
 void resetMatriz(int linha1, int coluna1, int linha2, int coluna2){
     modificarMatriz(linha1, coluna1, linha2, coluna2);
-    //matrix[linha1][coluna1] = " *";
-    //matrix[linha2][coluna2] = " *";
+    cout << representaMatriz();
 }
 
 bool fimDeJogo(){
@@ -175,7 +153,6 @@ bool fimDeJogo(){
 		}else{
 			return false;
 		}
-
 	}else if (nivel == 2){
 		if (fimDoJogo == 18){
 			return true;
@@ -197,38 +174,41 @@ bool fimDeJogo(){
 int main(){
     int linha1, coluna1, linha2, coluna2;
 
-    cout<< "Escolha um dos niveis:\n" <<
+    cout<< "Escolha um dos niveis:\n\n" <<
 			"1. Iniciante\n" <<
 			"2. Intermediario\n" <<
-			"3. Avancado" << endl;
+			"3. Avancado\n" <<
+			"4. Sair\n\n";
 
     cin>> nivel;
 
     while(nivel <= 0 || nivel > 3){
-        cout << "Insira um nivel valido!\n";
+        cout << "\nOpcao Invalida! Insira um nivel valido!\n\n";
         cin >> nivel;
     }
 
-
+    //matriz = geraMatrizInicial(8);
+    //matriz[0][0] = "oi";
+    //cout << matriz[2][3];
    // cout<< matrizController(nivel);
-        cout << getMatrix(nivel);
 
+    cout << geraMatriz(nivel);
     while (! fimDeJogo()){
-		cout<< "Escolha a linha e a coluna, respectivamente, do primeiro elemento:"<< endl;
+		cout<< "\nEscolha a linha e a coluna, respectivamente, do primeiro elemento:"<< endl;
 		cin>> linha1;
 		cin>> coluna1;
 
-		cout<< "Escolha a linha e a coluna, respectivamente, do segundo elemento:"<<endl;
+		cout<< "\nEscolha a linha e a coluna, respectivamente, do segundo elemento:"<<endl;
 		cin>> linha2;
 		cin>> coluna2;
 
-		cout<< linha1 << coluna1 << linha2 << coluna2;
-
 		if (verificaPares(linha1, coluna1, linha2, coluna2)){
             modificarMatriz(linha1, coluna1, linha2, coluna2);
+            cout << representaMatriz();
 
         }else{
             resetMatriz(linha1, coluna1, linha2, coluna2);
+            cout << representaMatriz();
         }
 	}
 
