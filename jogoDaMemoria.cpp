@@ -1,13 +1,15 @@
 #include<iostream>
 #include<string>
 #include<sstream>
+#include<stdlib.h>
+#include<time.h>
 
 
 using namespace std;
 
 int nivel;
-int fimDoJogo;
-int tamMatriz;
+int fimDoJogo = 0;
+int tamMatriz = 0;
 string ** matriz;
 
 int matrizIniciante[4][4] = {
@@ -37,57 +39,62 @@ int matrizAvancada[8][8] = {
 	{9,22,3,18,20,32,7,8}
 };
 
+/*
+ * Função que verifica se os pares selecionados pelo usuário são iguais.
+ */
 bool verificaPares(int linha1, int coluna1, int linha2, int coluna2){
-	if (nivel == 1){
-		if (matrizIniciante[linha1][coluna1] == matrizIniciante[linha2][coluna2]){
-			return true;
-
-		}else{
-			return false;
-		}
-
-	}else if(nivel == 2){
-		if (matrizIntermediaria[linha1][coluna1] == matrizIntermediaria[linha2][coluna2]){
-			return true;
-
-		}else{
-			return false;
-		}
-
-	}else if (nivel == 3){
-		if (matrizAvancada[linha1][coluna1] == matrizAvancada[linha2][coluna2]){
-			return true;
-
-		}else{
-			return false;
-		}
-
-	}else{
-		return false;
-	}
+    bool retorno = false;
+    if ((linha1 != linha2) || (coluna1 != coluna2)){
+        if (nivel == 1){
+            if (matrizIniciante[linha1][coluna1] == matrizIniciante[linha2][coluna2]){
+                fimDoJogo++;
+                retorno = true;
+            }
+        }else if(nivel == 2){
+            if (matrizIntermediaria[linha1][coluna1] == matrizIntermediaria[linha2][coluna2]){
+                fimDoJogo++;
+                retorno = true;
+            }
+        }else if (nivel == 3){
+            if (matrizAvancada[linha1][coluna1] == matrizAvancada[linha2][coluna2]){
+                fimDoJogo++;
+                retorno = true;
+            }
+        }
+    }
+    return retorno;
 }
 
-string toString(int i){
+/*
+ * Função que converte um inteiro em string.
+ */
+string intToString(int i){
     ostringstream temp;
     temp << i;
     return temp.str();
 }
 
+/*
+ * Função que modifica a matriz do usuário inserindo os pares nas respectivas posições.
+ */
 void modificarMatriz(int linha1, int coluna1, int linha2, int coluna2){
     if (nivel == 1){
-       matriz[linha1][coluna1] = " " + toString(matrizIniciante[linha1][coluna1]);
-       matriz[linha2][coluna2] = " " + toString(matrizIniciante[linha2][coluna2]);
+       matriz[linha1][coluna1] = " " + intToString(matrizIniciante[linha1][coluna1]);
+       matriz[linha2][coluna2] = " " + intToString(matrizIniciante[linha2][coluna2]);
 
     }else if (nivel == 2){
-       matriz[linha1][coluna1] = " " + toString(matrizIntermediaria[linha1][coluna1]);
-       matriz[linha2][coluna2] = " " + toString(matrizIntermediaria[linha2][coluna2]);
+       matriz[linha1][coluna1] = " " + intToString(matrizIntermediaria[linha1][coluna1]);
+       matriz[linha2][coluna2] = " " + intToString(matrizIntermediaria[linha2][coluna2]);
 
     }else{
-       matriz[linha1][coluna1] = " " + toString(matrizAvancada[linha1][coluna1]);
-       matriz[linha2][coluna2] = " " + toString(matrizAvancada[linha2][coluna2]);
+       matriz[linha1][coluna1] = " " + intToString(matrizAvancada[linha1][coluna1]);
+       matriz[linha2][coluna2] = " " + intToString(matrizAvancada[linha2][coluna2]);
     }
 }
 
+/*
+ * Função que cria dinamicamete uma matriz.
+ */
 string ** matrizDinamica(int tam){
     string **matriz = (string **) calloc( tam ,sizeof(string *));
     for(int i = 0; i < tam; i++){
@@ -96,6 +103,9 @@ string ** matrizDinamica(int tam){
     return matriz;
 }
 
+/*
+ * Função que preenche a matriz do usuário com X.
+ */
 void preencheMatriz(){
     for(int i = 0; i < tamMatriz; i++){
         for(int j = 0;j < tamMatriz; j++){
@@ -104,81 +114,86 @@ void preencheMatriz(){
     }
 }
 
+/*
+ * Função que retorna a representação da matriz do usuário no formato string.
+ */
 string representaMatriz(){
-    int tam = tamMatriz;
-    string matrixRetorno = "";
-    for(int i = 0; i < tam; i++){
-        for(int j = 0;j < tam; j++){
+    string matrixRetorno = " ";
+    for(int i = 0; i < tamMatriz; i++){
+        matrixRetorno += "  " + intToString(i+1);
+    }
+    matrixRetorno += "\n";
+    for(int i = 0; i < tamMatriz; i++){
+        for(int j = 0;j < tamMatriz; j++){
+            if (j == 0){
+                matrixRetorno += intToString(i+1);
+            }
             matrixRetorno += " ";
             matrixRetorno += matriz[i][j];
-
-            }
-            matrixRetorno += "\n";
-
+        }
+        matrixRetorno += "\n";
     }
     return matrixRetorno;
-
 }
+
+/*
+ * Função que gera a matriz a partir do nível escolhido pelo usuário.
+ */
 string geraMatriz(int nivel){
     if(nivel == 1)
         tamMatriz = 4;
     else if(nivel == 2)
         tamMatriz = 6;
-    else if(nivel == 3)
+    else
         tamMatriz = 8;
-
     matriz = matrizDinamica(tamMatriz);
     preencheMatriz();
     return representaMatriz();
-
 }
 
-string limpaTela(){
+/*
+ * Função que limpa a tela do usuário.
+ */
+void limpaTela(){
     string retorno = "";
     for(int i = 0; i < 100; i++){
         retorno += "\n";
     }
-    return retorno;
+    cout << retorno;
 }
 
+/*
+ * Função que deleta os pares escolhidos pelo usuário se forem diferentes.
+ */
 void resetMatriz(int linha1, int coluna1, int linha2, int coluna2){
-    modificarMatriz(linha1, coluna1, linha2, coluna2);
-    cout << representaMatriz();
+    matriz[linha1][coluna1] = " X";
+    matriz[linha2][coluna2] = " X";
 }
 
-bool fimDeJogo(){
-	if (nivel == 1){
-		if (fimDoJogo == 8){
-			return true;
-		}else{
-			return false;
-		}
-	}else if (nivel == 2){
-		if (fimDoJogo == 18){
-			return true;
-
-		}else{
-			return false;
-		}
-
-	}else{
-		if (fimDoJogo == 32){
-			return true;
-
-		}else{
-			return false;
-		}
-	}
+/*
+ * Função que finaliza o jogo.
+ */
+bool fimDeJogo(time_t tempo){
+    return ((fimDoJogo > (tamMatriz*2)) || (difftime(time(NULL), tempo) > 180));
 }
+
+/*
+ * Função daley. Criada com o objetivo de funcionar em diferentes Sistemas Operacionais.
+ */
+void pause(int i){
+    time_t tempo = time(NULL);
+    while(difftime(time(NULL), tempo) <= i){}
+}
+
 
 int main(){
     int linha1, coluna1, linha2, coluna2;
+    time_t tempo;
 
     cout<< "Escolha um dos niveis:\n\n" <<
 			"1. Iniciante\n" <<
 			"2. Intermediario\n" <<
-			"3. Avancado\n" <<
-			"4. Sair\n\n";
+			"3. Avancado\n\n";
 
     cin>> nivel;
 
@@ -187,30 +202,33 @@ int main(){
         cin >> nivel;
     }
 
-    //matriz = geraMatrizInicial(8);
-    //matriz[0][0] = "oi";
-    //cout << matriz[2][3];
-   // cout<< matrizController(nivel);
-
+    tempo = time(NULL);
     cout << geraMatriz(nivel);
-    while (! fimDeJogo()){
+    while (!fimDeJogo(tempo)){
 		cout<< "\nEscolha a linha e a coluna, respectivamente, do primeiro elemento:"<< endl;
 		cin>> linha1;
+		linha1--;
 		cin>> coluna1;
+		coluna1--;
 
 		cout<< "\nEscolha a linha e a coluna, respectivamente, do segundo elemento:"<<endl;
 		cin>> linha2;
+		linha2--;
 		cin>> coluna2;
+		coluna2--;
 
 		if (verificaPares(linha1, coluna1, linha2, coluna2)){
             modificarMatriz(linha1, coluna1, linha2, coluna2);
             cout << representaMatriz();
-
         }else{
+            modificarMatriz(linha1, coluna1, linha2, coluna2);
+            cout << representaMatriz();
+            pause(5);
+            limpaTela();
             resetMatriz(linha1, coluna1, linha2, coluna2);
             cout << representaMatriz();
         }
 	}
-
+    cout << "Fim de jogo!";
     return 0;
 }
