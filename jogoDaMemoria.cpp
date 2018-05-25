@@ -152,17 +152,6 @@ string geraMatriz(int nivel){
 }
 
 /*
- * Função que limpa a tela do usuário.
- */
-void limpaTela(){
-    string retorno = "";
-    for(int i = 0; i < 100; i++){
-        retorno += "\n";
-    }
-    cout << retorno;
-}
-
-/*
  * Função que deleta os pares escolhidos pelo usuário se forem diferentes.
  */
 void resetMatriz(int linha1, int coluna1, int linha2, int coluna2){
@@ -224,7 +213,7 @@ int main(){
             modificarMatriz(linha1, coluna1, linha2, coluna2);
             cout << representaMatriz();
             pause(5);
-            limpaTela();
+            system("clear");
             resetMatriz(linha1, coluna1, linha2, coluna2);
             cout << representaMatriz();
         }
