@@ -178,7 +178,7 @@ bool fimDeJogo(time_t tempo){
 }
 
 /*
- * Função daley. Criada com o objetivo de funcionar em diferentes Sistemas Operacionais.
+ * Função delay. Criada com o objetivo de funcionar em diferentes Sistemas Operacionais.
  */
 void pause(int i){
     time_t tempo = time(NULL);
