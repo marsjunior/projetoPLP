@@ -202,11 +202,26 @@ string tempoString(int tempo){
         retorno += "0";
         retorno += s;
     }else{
-        retorno += s;
+        retorno +=s;
     }
 
     return retorno;
 }
+
+string intToStringRanking(int i){
+    string retorno = "";
+	ostringstream temp;
+    temp << i;
+	if(i < 10){
+		retorno += "0";
+		retorno += temp.str();
+	}else{
+		retorno += temp.str();
+	}
+	return retorno;
+}
+
+
 /*
  * Funcao ler arquivo e compara o tempo do jogador com os temos registrados no arquivo,
  * se o tempo do jogador atual for menor do que 1 dos 5 ultimos recordes esse valor e alterado
@@ -217,8 +232,9 @@ void rankingGrava(string nome, int tempo){
     string tempo1 = tempoString(tempo);
     string tempo2;
     string novoRanking = "";
-    int minutos1 = stoi(tempo1.substr(0, 1));
-    int segundos1 = stoi(tempo1.substr(2, 2));
+    int minutos1 = atoi(tempo1.substr(0, 1).c_str());
+    int segundos1 = atoi(tempo1.substr(2, 1).c_str());
+    segundos1 += atoi(tempo1.substr(3, 1).c_str());
     int minutos2 = 0;
     int segundos2 = 0;
     int linhas = 0;
@@ -227,14 +243,15 @@ void rankingGrava(string nome, int tempo){
     if(arquivo.is_open()){
         while(getline(arquivo, linha)){
             tempo2 = rankingTempo(linha);
-            minutos2 = stoi(tempo2.substr(0, 1));
-            segundos2 = stoi(tempo2.substr(2, 2));
+            minutos2 = atoi(tempo2.substr(0, 1).c_str());
+            segundos2 = atoi(tempo2.substr(2, 1).c_str());
+            segundos2 += atoi(tempo2.substr(3, 1).c_str());
             if(minutos1 < minutos2 && !gravou){
                 novoRanking += nome;
                 novoRanking += ": ";
                 novoRanking += intToString(minutos1);
-                novoRanking += "m ";
-                novoRanking += intToString(segundos1);
+                novoRanking += "m";
+                novoRanking += intToStringRanking(segundos1);
                 novoRanking += "s\n";
                 if(linhas < 4){
                     novoRanking += linha;
@@ -247,8 +264,8 @@ void rankingGrava(string nome, int tempo){
                     novoRanking += nome;
                     novoRanking += ": ";
                     novoRanking += intToString(minutos1);
-                    novoRanking += "m ";
-                    novoRanking += intToString(segundos1);
+                    novoRanking += "m";
+                    novoRanking += intToStringRanking(segundos1);
                     novoRanking += "s\n";
                     if(linhas < 4){
                         novoRanking += linha;
@@ -270,8 +287,8 @@ void rankingGrava(string nome, int tempo){
             novoRanking += nome;
             novoRanking += ": ";
             novoRanking += intToString(minutos1);
-            novoRanking += "m ";
-            novoRanking += intToString(segundos1);
+            novoRanking += "m";
+            novoRanking += intToStringRanking(segundos1);
             novoRanking += "s\n";
             gravou = true;
         }
